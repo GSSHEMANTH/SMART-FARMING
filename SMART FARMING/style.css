@@ -1,0 +1,655 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #2b2b8e 100%);
+  min-height: 100vh;
+  color: #333;
+}
+
+.screen {
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Home Screen */
+#home {
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.menu-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  padding: 15px 30px;
+  margin: 10px;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  width: 280px;
+  font-weight: 600;
+}
+
+.menu-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  background: white;
+}
+
+.menu-btn.secondary {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.menu-btn.small {
+  width: auto;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.header button {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.header button:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.header h2 {
+  color: white;
+  font-size: 1.8rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Upload Section */
+.upload-section {
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.upload-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px dashed #667eea;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.upload-btn:hover {
+  background: white;
+  border-color: #764ba2;
+}
+
+/* Preview Image */
+.preview {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 10px;
+  margin: 20px 0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Input Boxes */
+.input-box {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  background: white;
+}
+
+/* Results Sections */
+.prediction-results, .crop-results, .water-results {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  margin: 20px 0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+.prediction-header, .crop-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.confidence {
+  background: #007bff;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.severity-badge {
+  background: #ff6b6b;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  display: inline-block;
+}
+
+.season-badge {
+  background: #28a745;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Prediction Details */
+.prediction-details h4, .crop-details h4 {
+  color: #333;
+  margin: 15px 0 8px 0;
+  font-size: 1.1rem;
+}
+
+.prediction-details p, .crop-details p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* Probability Chart */
+.probability-chart {
+  margin-top: 20px;
+}
+
+.probability-bar-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.probability-label {
+  min-width: 120px;
+  font-weight: 600;
+  color: #333;
+}
+
+.probability-bar {
+  flex: 1;
+  height: 20px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.probability-fill {
+  height: 100%;
+  background: #007bff;
+  transition: width 0.3s ease;
+}
+
+.probability-percentage {
+  min-width: 50px;
+  text-align: right;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Voice Assistant */
+.voice-controls {
+  margin-bottom: 30px;
+}
+
+.voice-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  color: white;
+}
+
+.pulse {
+  width: 20px;
+  height: 20px;
+  background: #ff6b6b;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.voice-content {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  margin: 20px 0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+.voice-text, .assistant-text {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+  line-height: 1.6;
+  min-height: 60px;
+}
+
+.voice-help {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 25px;
+  margin: 20px 0;
+  width: 100%;
+  max-width: 600px;
+}
+
+.voice-help ul {
+  list-style: none;
+  padding: 0;
+}
+
+.voice-help li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  color: #333;
+}
+
+.voice-help li:last-child {
+  border-bottom: none;
+}
+
+/* Calendar Form */
+.calendar-form {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+/* Crop Details */
+.detail-section {
+  margin-bottom: 20px;
+}
+
+.detail-section h4 {
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+
+.detail-section p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Error Messages */
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 20px 0;
+  border: 1px solid #f5c6cb;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+/* Water Estimation Styles */
+.water-section {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #e9ecef;
+  width: 100%;
+  max-width: 600px;
+}
+
+.water-section h3 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.section-desc {
+  color: #6c757d;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.water-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.water-amount {
+  text-align: center;
+}
+
+.water-number {
+  font-size: 32px;
+  font-weight: bold;
+  color: #007bff;
+  display: block;
+}
+
+.water-unit {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.detected-conditions {
+  margin-bottom: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  border: 1px solid #e9ecef;
+}
+
+.detected-conditions h4 {
+  color: #495057;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.conditions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.condition-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+}
+
+.condition-label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+}
+
+.condition-value {
+  color: #007bff;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+.water-breakdown {
+  margin-bottom: 20px;
+}
+
+.water-breakdown h4 {
+  color: #495057;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f3f4;
+  font-size: 14px;
+}
+
+.breakdown-item:last-child {
+  border-bottom: none;
+  font-weight: 600;
+  color: #007bff;
+}
+
+.water-recommendations {
+  margin-bottom: 20px;
+}
+
+.water-recommendations h4 {
+  color: #495057;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.water-recommendations ul {
+  list-style: none;
+  padding: 0;
+}
+
+.water-recommendations li {
+  background: #e3f2fd;
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  border-left: 4px solid #2196f3;
+  font-size: 14px;
+  color: #1565c0;
+}
+
+.water-tips {
+  background: #fff3e0;
+  border-radius: 8px;
+  padding: 15px;
+  border: 1px solid #ffcc02;
+}
+
+.water-tips h4 {
+  color: #e65100;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.water-tips ul {
+  list-style: none;
+  padding: 0;
+}
+
+.water-tips li {
+  padding: 5px 0;
+  color: #bf360c;
+  font-size: 14px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.water-tips li:before {
+  content: "💧";
+  position: absolute;
+  left: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+  
+  .menu-btn {
+    width: 250px;
+    font-size: 1rem;
+  }
+  
+  .water-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .water-number {
+    font-size: 28px;
+  }
+  
+  .breakdown-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .conditions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .header h2 {
+    font-size: 1.5rem;
+  }
+}
+/* Update the body and home screen styles in your style.css */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #333;
+}
+
+/* Home Screen with Background Image */
+#home {
+  text-align: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+              url('https://www.synox.io/wp-content/uploads/2022/04/smart-farming-transition-agricole.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Update title for better visibility on background image */
+.title {
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 20px 40px;
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+}
+
+/* Update menu buttons for better visibility */
+.menu-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  padding: 15px 30px;
+  margin: 10px;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  width: 280px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.menu-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  background: rgba(255, 255, 255, 1);
+}
+
+/* Add responsive adjustments for the background */
+@media (max-width: 768px) {
+  #home {
+    background-attachment: scroll; /* Better performance on mobile */
+  }
+  
+  .title {
+    font-size: 2rem;
+    padding: 15px 25px;
+  }
+  
+  .menu-btn {
+    width: 250px;
+    font-size: 1rem;
+  }
+}

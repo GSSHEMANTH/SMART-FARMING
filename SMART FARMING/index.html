@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Farming</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="screen" id="home">
+    <h1 class="title">SMART FARMING</h1>
+    <button onclick="navigate('disease')" class="menu-btn">🌾 DISEASE DETECTION</button>
+    <button onclick="navigate('voice')" class="menu-btn">🎤 VOICE ASSISTANT</button>
+    <button onclick="navigate('calendar')" class="menu-btn">📅 CROP CALENDAR</button>
+    <button onclick="navigate('water')" class="menu-btn">💧 WATER ESTIMATION</button>
+    <button onclick="navigate('offline')" class="menu-btn">📴 OFFLINE MODE</button>
+  </div>
+
+  <!-- Disease Detection -->
+  <div class="screen hidden" id="disease">
+    <div class="header">
+      <button onclick="navigate('home')">←</button>
+      <h2>DISEASE DETECTION</h2>
+    </div>
+    
+    <div class="upload-section">
+      <label for="diseaseFile" class="upload-btn">
+        �� Choose Image File
+      </label>
+      <input type="file" id="diseaseFile" accept="image/*" onchange="previewImage(event, 'diseasePreview'); sendForPrediction(event);" style="display: none;">
+    </div>
+    
+    <img id="diseasePreview" class="preview"/>
+    
+    <!-- Loading indicator -->
+    <div id="loadingIndicator" class="loading hidden">
+      <div class="spinner"></div>
+      <p>Analyzing image...</p>
+    </div>
+    
+    <!-- Prediction Results -->
+    <div id="predictionResults" class="prediction-results hidden">
+      <div class="prediction-header">
+        <h3 id="predictionTitle"></h3>
+        <span id="confidenceScore" class="confidence"></span>
+      </div>
+      
+      <div class="severity-badge" id="severityBadge"></div>
+      
+      <div class="prediction-details">
+        <h4>Description:</h4>
+        <p id="diseaseDescription"></p>
+        
+        <h4>Recommendation:</h4>
+        <p id="diseaseRecommendation"></p>
+      </div>
+      
+      <div class="probability-chart">
+        <h4>Probability Breakdown:</h4>
+        <div id="probabilityBars"></div>
+      </div>
+    </div>
+    
+    <!-- Error message -->
+    <div id="errorMessage" class="error-message hidden"></div>
+  </div>
+
+  <!-- Voice Assistant -->
+  <div class="screen hidden" id="voice">
+    <div class="header">
+      <button onclick="navigate('home')">←</button>
+      <h2>VOICE ASSISTANT</h2>
+    </div>
+    
+    <div class="voice-controls">
+      <button class="menu-btn" onclick="startVoice()" id="voiceBtn">🎙️ TAP TO SPEAK</button>
+      <button class="menu-btn secondary" onclick="stopVoice()" id="stopBtn" style="display: none;">⏹️ STOP</button>
+    </div>
+    
+    <div class="voice-status">
+      <div id="voiceIndicator" class="voice-indicator hidden">
+        <div class="pulse"></div>
+        <span>Listening...</span>
+      </div>
+    </div>
+    
+    <div class="voice-content">
+      <div class="user-input">
+        <h4>You said:</h4>
+        <p id="voiceText" class="voice-text"></p>
+      </div>
+      
+      <div class="assistant-response">
+        <h4>Assistant Response:</h4>
+        <p id="assistantText" class="assistant-text"></p>
+        <button class="menu-btn small" onclick="speakResponse()" id="speakBtn" style="display: none;">
+          🔊 SPEAK RESPONSE
+        </button>
+      </div>
+    </div>
+    
+    <div class="voice-help">
+      <h4>💡 Try asking:</h4>
+      <ul>
+        <li>"How to treat plant diseases?"</li>
+        <li>"Best time to plant tomatoes?"</li>
+        <li>"How much water do crops need?"</li>
+        <li>"What causes yellow leaves?"</li>
+        <li>"Organic pest control methods?"</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Crop Calendar -->
+  <div class="screen hidden" id="calendar">
+    <div class="header">
+      <button onclick="navigate('home')">←</button>
+      <h2>CROP CALENDAR</h2>
+    </div>
+    
+    <div class="calendar-form">
+      <select class="input-box" id="monthSelect">
+        <option value="">Select Month</option>
+        <option value="january">January</option>
+        <option value="february">February</option>
+        <option value="march">March</option>
+        <option value="april">April</option>
+        <option value="may">May</option>
+        <option value="june">June</option>
+        <option value="july">July</option>
+        <option value="august">August</option>
+        <option value="september">September</option>
+        <option value="october">October</option>
+        <option value="november">November</option>
+        <option value="december">December</option>
+      </select>
+      
+      <select class="input-box" id="cropSelect">
+        <option value="">Select Crop</option>
+        <option value="tomato">Tomato</option>
+        <option value="potato">Potato</option>
+        <option value="onion">Onion</option>
+        <option value="carrot">Carrot</option>
+        <option value="cabbage">Cabbage</option>
+        <option value="cauliflower">Cauliflower</option>
+        <option value="peas">Peas</option>
+        <option value="beans">Beans</option>
+        <option value="cucumber">Cucumber</option>
+        <option value="pepper">Pepper</option>
+        <option value="lettuce">Lettuce</option>
+        <option value="spinach">Spinach</option>
+        <option value="corn">Corn</option>
+        <option value="wheat">Wheat</option>
+        <option value="rice">Rice</option>
+        <option value="cotton">Cotton</option>
+        <option value="sugarcane">Sugarcane</option>
+      </select>
+      
+      <button class="menu-btn" onclick="getCropInfo()">🌱 GET CROP INFO</button>
+    </div>
+    
+    <!-- Loading indicator -->
+    <div id="calendarLoading" class="loading hidden">
+      <div class="spinner"></div>
+      <p>Analyzing crop data...</p>
+    </div>
+    
+    <!-- Crop Information Results -->
+    <div id="cropResults" class="crop-results hidden">
+      <div class="crop-header">
+        <h3 id="cropTitle"></h3>
+        <span id="cropSeason" class="season-badge"></span>
+      </div>
+      
+      <div class="crop-details">
+        <div class="detail-section">
+          <h4>�� Planting Time:</h4>
+          <p id="plantingTime"></p>
+        </div>
+        
+        <div class="detail-section">
+          <h4>⏱️ Time to Harvest:</h4>
+          <p id="harvestTime"></p>
+        </div>
+        
+        <div class="detail-section">
+          <h4>🌱 Fertilizer Schedule:</h4>
+          <div id="fertilizerSchedule"></div>
+        </div>
+        
+        <div class="detail-section">
+          <h4>�� Watering Needs:</h4>
+          <p id="wateringNeeds"></p>
+        </div>
+        
+        <div class="detail-section">
+          <h4>🌡️ Climate Requirements:</h4>
+          <p id="climateNeeds"></p>
+        </div>
+        
+        <div class="detail-section">
+          <h4>💡 Growing Tips:</h4>
+          <p id="growingTips"></p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Error message -->
+    <div id="calendarError" class="error-message hidden"></div>
+  </div>
+
+  <!-- Water Estimation -->
+  <div class="screen hidden" id="water">
+    <div class="header">
+      <button onclick="navigate('home')">←</button>
+      <h2>WATER ESTIMATION</h2>
+    </div>
+    
+    <!-- Image Upload Section -->
+    <div class="water-section">
+      <h3>🌾 Upload Crop Image for Water Analysis</h3>
+      <p class="section-desc">Upload an image of your crop and soil to automatically predict water requirements</p>
+      
+      <div class="upload-section">
+        <label for="waterImageFile" class="upload-btn">
+          💧 Upload Crop & Soil Image
+        </label>
+        <input type="file" id="waterImageFile" accept="image/*" onchange="previewImage(event, 'waterImagePreview'); predictWaterFromImage(event);" style="display: none;">
+      </div>
+      
+      <img id="waterImagePreview" class="preview"/>
+    </div>
+    
+    <!-- Loading indicator -->
+    <div id="waterLoading" class="loading hidden">
+      <div class="spinner"></div>
+      <p>Analyzing image for water requirements...</p>
+    </div>
+    
+    <!-- Water Prediction Results -->
+    <div id="waterResults" class="water-results hidden">
+      <div class="water-header">
+        <h3>💧 Water Requirement Analysis</h3>
+        <div class="water-amount">
+          <span id="waterAmount" class="water-number"></span>
+          <span class="water-unit">inches/week</span>
+        </div>
+      </div>
+      
+      <!-- Detected Conditions -->
+      <div class="detected-conditions">
+        <h4>🔍 Detected Conditions:</h4>
+        <div class="conditions-grid">
+          <div class="condition-item">
+            <span class="condition-label">Crop Type:</span>
+            <span id="detectedCrop" class="condition-value"></span>
+          </div>
+          <div class="condition-item">
+            <span class="condition-label">Growth Stage:</span>
+            <span id="detectedGrowth" class="condition-value"></span>
+          </div>
+          <div class="condition-item">
+            <span class="condition-label">Soil Type:</span>
+            <span id="detectedSoil" class="condition-value"></span>
+          </div>
+          <div class="condition-item">
+            <span class="condition-label">Weather:</span>
+            <span id="detectedWeather" class="condition-value"></span>
+          </div>
+          <div class="condition-item">
+            <span class="condition-label">Soil Moisture:</span>
+            <span id="detectedMoisture" class="condition-value"></span>
+          </div>
+          <div class="condition-item">
+            <span class="condition-label">Disease Status:</span>
+            <span id="detectedDisease" class="condition-value"></span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="water-breakdown">
+        <h4>📊 Calculation Breakdown:</h4>
+        <div class="breakdown-item">
+          <span>Base Water Requirement:</span>
+          <span id="baseWater"></span>
+        </div>
+        <div class="breakdown-item">
+          <span>Growth Stage Adjustment:</span>
+          <span id="growthAdjustment"></span>
+        </div>
+        <div class="breakdown-item">
+          <span>Soil Type Adjustment:</span>
+          <span id="soilAdjustment"></span>
+        </div>
+        <div class="breakdown-item">
+          <span>Weather Adjustment:</span>
+          <span id="weatherAdjustment"></span>
+        </div>
+        <div class="breakdown-item">
+          <span>Disease Adjustment:</span>
+          <span id="diseaseAdjustment"></span>
+        </div>
+        <div class="breakdown-item">
+          <span>Soil Moisture Adjustment:</span>
+          <span id="moistureAdjustment"></span>
+        </div>
+      </div>
+      
+      <div class="water-recommendations">
+        <h4>�� Recommendations:</h4>
+        <ul id="waterRecommendations"></ul>
+      </div>
+      
+      <div class="water-tips">
+        <h4>�� Watering Tips:</h4>
+        <ul>
+          <li>Water early in the morning to reduce evaporation</li>
+          <li>Water at the base of plants, not on leaves</li>
+          <li>Use mulch to retain soil moisture</li>
+          <li>Check soil moisture before watering</li>
+          <li>Consider drip irrigation for efficiency</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Error message -->
+    <div id="waterError" class="error-message hidden"></div>
+  </div>
+
+  <!-- Offline Mode -->
+  <div class="screen hidden" id="offline">
+    <div class="header">
+      <button onclick="navigate('home')">←</button>
+      <h2>OFFLINE MODE</h2>
+    </div>
+    <input type="file" accept="image/*" onchange="previewImage(event, 'offlinePreview')">
+    <img id="offlinePreview" class="preview"/>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
